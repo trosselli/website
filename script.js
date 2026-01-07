@@ -84,3 +84,30 @@ document.querySelectorAll('.contact-item').forEach(item => {
     item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(item);
 });
+
+// Photo Gallery - Smooth scroll on click for better UX
+const photoGallery = document.querySelector('.photo-gallery');
+if (photoGallery) {
+    // Enable smooth scrolling with momentum on touch devices
+    photoGallery.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            photoGallery.scrollLeft += e.deltaY;
+        }
+    }, { passive: false });
+
+    // Hide scroll hint after user scrolls
+    let hasScrolled = false;
+    photoGallery.addEventListener('scroll', () => {
+        if (!hasScrolled && photoGallery.scrollLeft > 0) {
+            hasScrolled = true;
+            const scrollHint = document.querySelector('.gallery-scroll-hint');
+            if (scrollHint) {
+                scrollHint.style.opacity = '0.3';
+                setTimeout(() => {
+                    scrollHint.style.display = 'none';
+                }, 500);
+            }
+        }
+    });
+}
